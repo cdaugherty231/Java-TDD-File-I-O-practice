@@ -22,19 +22,12 @@ public class WordCount {
 						numberOfSentences++;
 						}
 					}
-//					String[] sentences = line.split(".|\\!|\\?");
 					if(!(line.isEmpty())) {
-						
-					
 					numberOfWords += words.length;
 					}
-					
-//					numberOfSentences += sentences.length;
-					
 				}
 				System.out.println("Word Count: " + numberOfWords);
 				System.out.println("Sentence Count: " + numberOfSentences);
-				
 			} catch (FileNotFoundException e) {
 				System.out.println("Unable to find file "+e.getMessage());
 				e.printStackTrace();
