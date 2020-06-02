@@ -1,9 +1,7 @@
 package com.techelevator;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Scanner;
 
 public class WordCount {
@@ -18,14 +16,20 @@ public class WordCount {
 					String line = fileScanner.nextLine();
 					line = line.replaceAll("\\s+", " ");
 					String[] words = line.trim().split(" |\\: ");
-					String[] sentences = line.split(".|\\!|\\?");
+					for(int i=0;i<words.length;i++) {
+						String nextWord = words[i];
+						if (nextWord.endsWith(".")||nextWord.endsWith("!")||nextWord.endsWith("?")) {
+						numberOfSentences++;
+						}
+					}
+//					String[] sentences = line.split(".|\\!|\\?");
 					if(!(line.isEmpty())) {
 						
 					
 					numberOfWords += words.length;
 					}
 					
-					numberOfSentences += sentences.length;
+//					numberOfSentences += sentences.length;
 					
 				}
 				System.out.println("Word Count: " + numberOfWords);
