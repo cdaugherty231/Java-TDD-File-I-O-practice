@@ -24,7 +24,7 @@ public class FindAndReplace {
 				while(fileScanner.hasNextLine()) {
 					String line = fileScanner.nextLine();
 					line = line.replaceAll(searchWord,wordThatReplacesSearchWord);
-					
+						
 					printWriter.println(line);
 				}
 				printWriter.close();
