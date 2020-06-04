@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class VendingMachine {
 	private Scanner in;
 	private int customerBalance = 0;
-	
+	private int itemCount = 5;
 	Map<String, MenuItem> inventory = new LinkedHashMap<String, MenuItem>();
 	
 	
@@ -24,7 +24,7 @@ public class VendingMachine {
 	//put items into array of strings and split them by a |		
 			String[] itemWords = nextItemLineInFile.split("\\|");
 	//make a object with the item name, item cost and item category
-			MenuItem menuItemObject = new MenuItem(itemWords[1], itemWords[2], itemWords[3]);
+			MenuItem menuItemObject = new MenuItem(itemWords[1], itemWords[2], itemWords[3], itemCount);
 	//put slot number in the value & put the item object into the value of our map
 			inventory.put(itemWords[0], menuItemObject);
 			}
@@ -60,9 +60,33 @@ public class VendingMachine {
 			else if(userInputForPurchaseItemsOption.equals("2")) {
 				if(customerBalance <=0) {
 					//then they dont get shit
+					System.out.println("Your balance is 0");
+					purchaseItemsOptions();
 				}
-				else {
-					//then they get to select product they want
+				else { 
+					System.out.println("Enter Item Slot Number: ");
+					String userInputForSlotNumber = in.nextLine();
+					setCustomerBalance(customerBalance - itemPrice);
+					for(String : inventory) {
+						if(inventory.containsKey(userInputForSlotNumber)) {
+							//decrement the itemCount in Map
+							inventory.get(userInputForSlotNumber)
+						}
+					}
+					//update inventory and balance of vending machine story 3
+					if (inventory.get(userInputForSlotNumber).toString().contains("Chip")) {
+					System.out.println("Crunch Crunch, Yum!");
+					}
+					else if (inventory.get(userInputForSlotNumber).toString().contains("Candy")) {
+						System.out.println("Munch Munch, Yum!");
+					}
+					else if (inventory.get(userInputForSlotNumber).toString().contains("Drink")) {
+						System.out.println("Glug Glug, Yum!");
+					}
+					else if (inventory.get(userInputForSlotNumber).toString().contains("Gum")) {
+						System.out.println("Chew Chew, Yum!");
+					}
+					purchaseItemsOptions();
 				}
 			}
 			else if(userInputForPurchaseItemsOption.equals("3")) {
@@ -77,10 +101,7 @@ public class VendingMachine {
 		
 	}
 	
-	public void customerBalance() {
-		int customerBalance = 0;
-		
-	}
+	
 	public int getCustomerBalance(int customerBalance) {
 		return customerBalance;
 	}

@@ -7,10 +7,11 @@ public class MenuItem {
 	private String itemCategory;
 	private int itemCount = 5;
 	
-	public MenuItem(String itemName, String itemCost, String itemCategory) {
+	public MenuItem(String itemName, String itemCost, String itemCategory, int itemCount) {
 		this.itemName=itemName;
 		this.itemCost=itemCost;
 		this.itemCategory=itemCategory;
+		this.itemCount=itemCount;
 	}
 	
 	public String getMenuItemName() {
