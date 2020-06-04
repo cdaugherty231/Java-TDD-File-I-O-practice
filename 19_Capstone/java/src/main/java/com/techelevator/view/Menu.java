@@ -15,6 +15,7 @@ public class Menu {
 		this.in = new Scanner(input);
 	}
 
+	//Gets user choice checks it to be valid and returns it
 	public Object getChoiceFromOptions(Object[] options) {
 		Object choice = null;
 		while (choice == null) {
@@ -24,6 +25,7 @@ public class Menu {
 		return choice;
 	}
 
+	//Makes sure user input is not negative or not an option
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
@@ -41,6 +43,7 @@ public class Menu {
 		return choice;
 	}
 
+	//
 	private void displayMenuOptions(Object[] options) {
 		out.println();
 		for (int i = 0; i < options.length; i++) {
