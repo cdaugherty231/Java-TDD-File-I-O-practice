@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Menu {
 
@@ -15,7 +16,7 @@ public class Menu {
 		this.in = new Scanner(input);
 	}
 
-	//Gets user choice checks it to be valid and returns it
+	// Gets user choice checks it to be valid and returns it
 	public Object getChoiceFromOptions(Object[] options) {
 		Object choice = null;
 		while (choice == null) {
@@ -25,7 +26,7 @@ public class Menu {
 		return choice;
 	}
 
-	//Makes sure user input is not negative or not an option
+	// Makes sure user input is not negative or not an option
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
@@ -35,7 +36,8 @@ public class Menu {
 				choice = options[selectedOption - 1];
 			}
 		} catch (NumberFormatException e) {
-			// eat the exception, an error message will be displayed below since choice will be null
+			// eat the exception, an error message will be displayed below since choice will
+			// be null
 		}
 		if (choice == null) {
 			out.println("\n*** " + userInput + " is not a valid option ***\n");
@@ -52,5 +54,47 @@ public class Menu {
 		}
 		out.print("\nPlease choose an option >>> ");
 		out.flush();
+	}
+
+	public int getUserDepositedAmount() {
+		int choice = -1;
+		while (choice < 0) {
+			out.println("How much would you like to deposit?");
+			out.flush();
+			String userInput = in.nextLine();
+			try {
+				int selectedAmount = Integer.valueOf(userInput);
+				if (selectedAmount > 0 && selectedAmount <= 20) {
+					choice = selectedAmount;
+				}
+			} catch (NumberFormatException e) {
+				// eat the exception, an error message will be displayed below since choice will
+				// be null
+			}
+			if (choice == -1) {
+				out.println("\n*** " + userInput + " is not a valid option ***\n");
+			}
+		}
+		return choice;
+
+	}
+	public String getSlotNumber(Set<String> validSlots) {
+		String choice = null;
+		while (choice == null) {
+			out.println("Enter Item Slot Number:");
+			out.flush();
+			String userInput = in.nextLine();
+			if(!(validSlots.contains(userInput))) {
+				choice = null;
+			}
+			else {
+				choice = userInput;
+			}
+			if (choice == null) {
+				out.println("\n*** " + userInput + " is not a valid slot number ***\n");
+				out.flush();
+			}
+		}
+		return choice;
 	}
 }
