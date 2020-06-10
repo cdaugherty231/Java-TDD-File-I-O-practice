@@ -52,13 +52,15 @@ public class Menu {
 			int optionNum = i + 1;
 			out.println(optionNum + ") " + options[i]);
 		}
+		System.out.println(" ");
 		out.print("\nPlease choose an option >>> ");
 		out.flush();
 	}
-
+	//method that will get the users deposited amount
 	public int getUserDepositedAmount() {
 		int choice = -1;
 		while (choice < 0) {
+			System.out.println(" ");
 			out.println("How much would you like to deposit?");
 			out.flush();
 			String userInput = in.nextLine();
@@ -81,6 +83,7 @@ public class Menu {
 	public String getSlotNumber(Set<String> validSlots) {
 		String choice = null;
 		while (choice == null) {
+			System.out.println(" ");
 			out.println("Enter Item Slot Number:");
 			out.flush();
 			String userInput = in.nextLine();

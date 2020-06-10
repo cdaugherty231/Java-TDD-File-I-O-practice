@@ -34,20 +34,17 @@ public class VendingMachineCLI{
 
 	//Getting choice from customer
 	public void run() {
-		//Create audit file
+		//Create audit file for owner
 		File auditFile = new File("AuditFile.txt");
-		
-		//Create scanner
-		Scanner userInput = new Scanner(System.in);
 		
 		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
-
+			// display vending machine items
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
-				// display vending machine items
+			//Display    1) Feed Money     2) Select Product     3) Finish Transaction 	
 				vendingMachine.displayItemsInInventory();
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				//Display    1) Feed Money     2) Select Product     3) Finish Transaction 
+			//call method to purchase options	
 				purchaseItemsOptions();	
 			}
 		}
@@ -68,20 +65,22 @@ public class VendingMachineCLI{
 		
 		
 			
-	
+		//created boolean to keep loop for transaction
 		boolean inAPurchaseTransaction = true;
+		//created string for the users choice
 		String choice = "";
 		//Create date formatter
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss");
 		//Create Printwriter
 		PrintWriter pw = null;
+		//try and catch incase the audit file cannot be created
 		try {
 			pw = new PrintWriter("AuditFile.txt");
 		} catch (FileNotFoundException e1) {
 			System.out.println("There was a problem writing the audit file!");
 			e1.printStackTrace();
 		}
-		
+		//while loop to keep user in transaction as long as pw was created and purchasetransaction is true
 		while(inAPurchaseTransaction & pw != null){
 		//gets choice from user and checks it make sure it is valid
 		choice= (String) menu.getChoiceFromOptions(MAIN_MENU_OPTION_PURCHASE_OPTIONS);
@@ -89,15 +88,20 @@ public class VendingMachineCLI{
 			
 			
 			if(choice.equals("Feed Money")) {
+				//call method to get deposited amount and set to variable userInputForAmountToDeposit
 				int userInputForAmountToDeposit = menu.getUserDepositedAmount();
+				//call method to add that amount to current customer balance to updated it
 				vendingMachine.addCustomerBalance(userInputForAmountToDeposit);
-				pw.println(dtf.format(LocalDateTime.now()) + " FEED MONEY: " + userInputForAmountToDeposit +" "+ Math.round(vendingMachine.getCustomerBalance()));
-				
+				//saves the deposit to audit file
+				pw.println(dtf.format(LocalDateTime.now()) + " FEED MONEY: $" + userInputForAmountToDeposit +" $"+ Math.round(vendingMachine.getCustomerBalance()));
+				//prints out customers deposit
+				System.out.println(" ");
 				System.out.println("Your current balance is " + vendingMachine.getCustomerBalance());
 			}
 			else if(choice.equals("Select Product")) {
 				if(vendingMachine.getCustomerBalance() <=0) {
 					//Print message that customer cannot buy because balance is 0
+					System.out.println(" ");
 					System.out.println("Your balance is 0, Feed Money.");
 					
 				}
@@ -106,29 +110,36 @@ public class VendingMachineCLI{
 					String userInputSlotNumber = menu.getSlotNumber(vendingMachine.getValidSlots());
 					//make object of MenuItem
 					MenuItem menuItem = vendingMachine.getMenuItem(userInputSlotNumber);
+					//if item is available continue
 					if (menuItem.getItemCount()> 0) {
+					//if customer has enough to buy item continue	
 					if (vendingMachine.getCustomerBalance()> menuItem.getMenuItemCost()) {
 						//updated new customer balance
 						vendingMachine.removeCustomerBalance(menuItem.getMenuItemCost());
 						//update the inventory
 						menuItem.sellItem();
 						//Print to audit file
-						pw.println(dtf.format(LocalDateTime.now()) + " "+ menuItem.getMenuItemName() + " " + userInputSlotNumber +" "+ menuItem.getMenuItemCost()+" "+ Math.round(vendingMachine.getCustomerBalance()));
+						pw.println(dtf.format(LocalDateTime.now()) + " "+ menuItem.getMenuItemName() + " " + userInputSlotNumber +" $"+ menuItem.getMenuItemCost()+" $"+ Math.round(vendingMachine.getCustomerBalance()));
 						
 						//make sound based on item selected
 						System.out.println(menuItem.makeNoise());
-						//to do : katie says if they have a 1 and purchase something for 2, handle that	
+							
 					}
+					//if customer doesn't have enough to buy item
 					else {
+						System.out.println(" ");
 						System.out.println("Insufficent Funds");
 					}
 					}
+					//if item is not available tell customer sold out
 					else {
+						System.out.println(" ");
 						System.out.println("Sorry, this item is Sold Out");
 					}
 //					purchaseItemsOptions();
 				}
 			}
+			//once customer chooses finish transaction
 			else if(choice.equals("Finish Transaction")) {
 				inAPurchaseTransaction = false;
 				int numberOfQuarters = 0;
@@ -154,15 +165,21 @@ public class VendingMachineCLI{
 					numberOfPennies = (int) (vendingMachine.getCustomerBalance() /.01); 
 							vendingMachine.setCustomerBalance(vendingMachine.getCustomerBalance() - (numberOfPennies*.01));
 				}
+				//print out the customers change
+				System.out.println(" ");
 				System.out.println("Your change is " + numberOfQuarters + " Quaters, "+ numberOfDimes+" Dimes, "+ numberOfNickels + " Nickels, "+ numberOfPennies+" Pennies.");
-				pw.println(dtf.format(LocalDateTime.now()) + " GIVE CHANGE: " + amountOfChange +" "+ Math.round(vendingMachine.getCustomerBalance()));
+				//save giving change transaction to audit file
+				pw.println(dtf.format(LocalDateTime.now()) + " GIVE CHANGE: $" + amountOfChange +" $"+ Math.round(vendingMachine.getCustomerBalance()));
 				pw.close();
+				System. exit(0);
 			}
+			//makes sure the customer choose "Feed Money, Select Product or Finish Transaction
 			else {
+				System.out.println(" ");
 				System.out.println("Please enter valid selection!");
 			}
 		} catch (NumberFormatException e) {
-			// eat the exception, an error message will be displayed below since choice will be null
+			// exception, an error message will be displayed below since choice will be null
 		}
 		
 		}

@@ -15,6 +15,7 @@ public class VendingMachine {
 	private double customerBalance = 0;
 	private int itemCount = 5;
 	
+	
 	public Map<String, MenuItem> mapOfItems = new LinkedHashMap<String, MenuItem>();
 	public Map<String, Integer> mapOfInventory = new LinkedHashMap<String, Integer>();
 	public Map<String, String> mapOfPrices = new LinkedHashMap<String, String>();
@@ -42,20 +43,25 @@ public class VendingMachine {
 		System.out.println("Couldn't find the input file.");
 	}
 }
+	//get MenuItem Object from this method based on slot number passed in
 	public MenuItem getMenuItem(String slotNumber) {
 		return mapOfItems.get(slotNumber);
 	}
+	//get a set of strings which is the key set of our mapOfItems
 	public Set<String> getValidSlots(){
 		return mapOfItems.keySet();
 	}
-	
+	//method that displays items in inventory
 	public void displayItemsInInventory() {
+		
 		List<String> listOfKeys = new ArrayList<>(mapOfItems.keySet());
-		for(String slot : listOfKeys)
-		{
+		//loops through each item in listOfKeys to get the slot number for an item
+		for(String slot : listOfKeys) {
+		//if the item is 0 in the inventory print out SOLD OUT instead of item name
 			if(mapOfInventory.get(slot).equals(0)) {
 				 System.out.println("SOLD OUT");
 			}
+			//if item inventory isnt 0 print the name of the item
 			else {MenuItem item = mapOfItems.get(slot);
 		   System.out.println(slot + " " + item.getMenuItemName() + " $" + item.getMenuItemCost());   
 			}
@@ -73,17 +79,19 @@ public class VendingMachine {
 		
 
 	}
-	
+	//gets current balance
 	public double getCustomerBalance() {
 		return customerBalance;
 	}
+	//sets an initial customer balance
 	public void setCustomerBalance(double customerBalance) {
 		this.customerBalance=customerBalance;
 	}
-	
+	//adds deposited amount to current balance
 	public void addCustomerBalance(int depositedAmount) {
 		this.customerBalance += depositedAmount;
 	}
+	//charges customer balance based on the charged amount and updates balance
 	public void removeCustomerBalance(double chargedAmount) {
 		this.customerBalance -= chargedAmount;
 	}
